@@ -69,19 +69,6 @@ public class ExcelExportService {
  }
  
  
- public ResponseEntity downloadFile(String fileName) {
- 	Path path = Paths.get("target/"+ fileName);
- 	Resource resource = null;
- 	try {
- 		resource = new UrlResource(path.toUri());
- 	} catch (MalformedURLException e) {
- 		e.printStackTrace();
- 	}
- 	return ResponseEntity.ok()
- 			.contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
- 			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
- 			.body(resource);
- }
-	 
+
      
 }

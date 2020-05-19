@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lowagie.text.DocumentException;
 import com.redapp.eclo.dao.ProgramRepository;
 import com.redapp.eclo.entities.AppUser;
 import com.redapp.eclo.entities.FileExport;
@@ -28,7 +29,9 @@ import com.redapp.eclo.entities.Program;
 import com.redapp.eclo.entities.ProgramRequest;
 import com.redapp.eclo.entities.UserProgCount;
 import com.redapp.eclo.entities.UserRequest;
+import com.redapp.eclo.export.DownloadService;
 import com.redapp.eclo.export.ExcelExportService;
+import com.redapp.eclo.export.PdfExportService;
 import com.redapp.eclo.services.LessonsService;
 import com.redapp.eclo.services.ProgramsService;
 import com.redapp.eclo.services.UsersService;
@@ -46,7 +49,10 @@ UsersService usersService;
 ProgramRepository programRepository;
 @Autowired
 ExcelExportService excelExportService;
-
+@Autowired
+PdfExportService pdfExportService;
+@Autowired
+DownloadService downloadService;
 
 //////////////////////Users functions //////////////
 @PostMapping("/admin/addUser")
@@ -131,6 +137,14 @@ return this.programsService.addPrgram(programRequest);
 	return this.programsService.editProgram(month,year,programRequest);
 	}
 
+@DeleteMapping("admin/programs/delete")
+public void deleteProgram(
+		@RequestParam String id)
+{
+	
+ this.programsService.deleteProgram(id);
+}
+
 @GetMapping("users/programs/list")
 public List<Program> programsPage()
 {
@@ -182,7 +196,7 @@ public List<Lesson> lessonsPage(
 return this.lessonsService.getLessons(month, year, username,categorie);
 }
 // teste//
-	@GetMapping(value = "/exportProgram")
+	@GetMapping(value = "/exportProgramXls")
 	public FileExport excelExportService
 	(@RequestParam Long month,
 			@RequestParam Long year,
@@ -191,10 +205,25 @@ return this.lessonsService.getLessons(month, year, username,categorie);
 return this.excelExportService.programExcelExport(month, year, username,categorie);
 	}
 	
+	
+	@GetMapping(value = "/exportProgramPdf")
+	public FileExport pdfExportService
+	(@RequestParam Long month,
+			@RequestParam Long year,
+			@RequestParam String username) throws FileNotFoundException, IOException, DocumentException {
+return this.pdfExportService.programPdfExport(month,year,username);
+	}
+	
 	@GetMapping(value = "/downloadFile")
 	public ResponseEntity downloadFile (@RequestParam String fileName) throws FileNotFoundException, IOException {
-return this.excelExportService.downloadFile(fileName);
+return this.downloadService.downloadFile(fileName);
 	}
+	@DeleteMapping(value = "/deleteFile")
+	public void deleteFile (@RequestParam String fileName) throws FileNotFoundException, IOException {
+ this.downloadService.deleteFile(fileName);
+	}
+	
+	
 	
 	
 	}

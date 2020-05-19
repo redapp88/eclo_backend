@@ -42,6 +42,21 @@ ProgramRepository programRepository;
 		oldProgram.setStatus(programRequest.getStatus());
 		return oldProgram;
 	}
+	@Override
+	public Program getProgram(Long month, Long year) {
+		Optional<Program> programOpt = this.programRepository.findById(month+""+year);
+		if(!programOpt.isPresent())
+			return null;
+		else return programOpt.get();
+	}
+	@Override
+	public void deleteProgram(String programId) {
+		if(!this.programRepository.findById(programId).isPresent())
+			throw new RuntimeException("programme introuvable");
+		
+		this.programRepository.deleteById(programId);
+		
+	}
 
 	
 

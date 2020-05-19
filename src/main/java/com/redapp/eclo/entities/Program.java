@@ -3,6 +3,7 @@ package com.redapp.eclo.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -32,7 +33,7 @@ public class Program {
 	private String hijri;
 	@NotNull
 	private String status;
-	@OneToMany(mappedBy = "program")
+	@OneToMany(mappedBy = "program",cascade=CascadeType.REMOVE)
 	@JsonIgnore
 	private List<Lesson> lessons = new ArrayList<>();
 

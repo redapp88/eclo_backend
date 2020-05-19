@@ -15,6 +15,8 @@ public interface ProgramsService {
 	public List<Program> getPrograms();
 	public Program addPrgram(ProgramRequest programRequest);
 	public Program editProgram(Long month,Long year,ProgramRequest programRequest);
+	public Program getProgram(Long month,Long year);
+	public void deleteProgram(String programId);
 	
 	
 }
