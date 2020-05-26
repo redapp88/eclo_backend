@@ -72,6 +72,7 @@ public class PdfExportService {
 	private static BaseFont bf;
     private static Font bigFont;
     private static Font smallFont;
+    private static Font xsmallFont;
    private static String [] months= {"يناير","فبراير","مارس","ابريل","ماي","يونيو","يوليوز","غشت","شتنبر","اكتوبر","نونبر","دجنبر"};
  
  
@@ -82,13 +83,15 @@ public class PdfExportService {
 	 
 	 Program p=this.programService.getProgram(month, year);
 	 if(p.equals(null))
-		 throw new RuntimeException("Prograle introuvable");
+		 throw new RuntimeException("Programme introuvable");
 	 
 	this.bf= BaseFont.createFont(
 			    "src/main/resources/fonts/arialuni.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 	this.bigFont= new Font(bf, 18,
             Font.BOLDITALIC);
 	this.smallFont= new Font(bf, 12,
+            Font.NORMAL);
+	this.xsmallFont= new Font(bf, 9,
             Font.NORMAL);
 	 String fileName="programme_"+month+"_"+year+"_"+username+".pdf";
      try {
@@ -99,7 +102,7 @@ public class PdfExportService {
          this.addMetaData(document,month,year,u.getName());
          this.addTitlePage(document,u,month,year,p.getHijri());
          this.addContent(document,month,year,username);
-         this.addFooter(document);
+         this.addFooter(document,u);
          document.close();
         
      } catch (Exception e) {
@@ -124,18 +127,22 @@ public class PdfExportService {
          throws DocumentException, MalformedURLException, IOException {
      Paragraph entete = new Paragraph();
      entete.setAlignment(Paragraph.ALIGN_CENTER);
-     addEmptyLine(document, 1);
+     addEmptyLine(document, 2);
      Image img = Image.getInstance("src/main/resources/images/royaume.png");
+     Image img2 = Image.getInstance("src/main/resources/images/logo.png");
      img.scaleAbsolute(50, 50);
      img.setAbsolutePosition(270, 780);
-
+     img2.scaleAbsolute(100, 80);
+     img2.setAbsolutePosition(490, 745);
      entete.add(img);
+     entete.add(img2);
      addEmptyLine(document, 2);
      document.add(entete);
       
      PdfPTable table = new PdfPTable(1);
      Phrase phrase = new Phrase();
-     String title=" البرنامج الشهري للواعظ";
+     
+     String title=" البرنامج الشهري لـ"+":"+this.categorieToName(user.getCategorie());
      title+=" "+user.getName();
      title+=" لشهر ";
      title+=" "+months[(int) (month-1)];
@@ -156,10 +163,11 @@ public class PdfExportService {
  private  void addContent(Document document, Long month, Long year, String username) throws DocumentException {
 	 java.util.List<Lesson> lessons=this.lessonsService.getLessons(month, year, username,"*");
 	 this.addEmptyLine(document, 2);
-	  PdfPTable table = new PdfPTable(5);
+	  PdfPTable table = new PdfPTable(6);
 	  table.setWidthPercentage(90);
-	  table.setWidths(new float[] { 1, 1,3,1,1 });
+	  table.setWidths(new float[] { 1, 1,1,3,1,1 });
 	  table.setHeaderRows(1);
+	  table.addCell(this.formatedCell("المكان"));
 	    table.addCell(this.formatedCell("التوقيت"));
 	    table.addCell(this.formatedCell("التاريخ"));
 	     table.addCell(this.formatedCell("الموضوع"));
@@ -168,9 +176,9 @@ public class PdfExportService {
      
      for(int i=0;i<lessons.size();i++) {
     	 Lesson l=lessons.get(i);
-    	 
+    	 table.addCell(formatedCell(l.getArea()));
     	 table.addCell(formatedCell(l.getTime()));
- 		table.addCell(formatedCell((l.getDate().getYear()+1900)+"/"+(l.getDate().getMonth()+1)+"/"+l.getDate().getDate()));
+ 		table.addCell(formatedSmallCell((l.getDate().getYear()+1900)+"/"+(l.getDate().getMonth()+1)+"/"+l.getDate().getDate()));
  		table.addCell(formatedCell(l.getTitle()));
  		table.addCell(formatedCell(l.getType()));
  		table.addCell(formatedCell((i+1)+""));
@@ -190,14 +198,23 @@ public class PdfExportService {
      return c1;
  }
  
- private  void addFooter(Document document)
+ private PdfPCell formatedSmallCell(String text) {
+	  Phrase phrase = new Phrase();
+    phrase.add(new Chunk(text, this.xsmallFont));
+	 PdfPCell c1 = new PdfPCell(phrase);
+    c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    c1.setUseDescender(true);
+    c1.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+    return c1;
+}
+ private  void addFooter(Document document, AppUser u)
          throws DocumentException, MalformedURLException, IOException {
 
      addEmptyLine(document, 2);   
      PdfPTable table = new PdfPTable(2);
      table.setWidthPercentage(80);
      PdfPCell c1=this.formatedCell("الرئيس");
-     PdfPCell c2=this.formatedCell("الواعظ");
+     PdfPCell c2=this.formatedCell(this.categorieToName(u.getCategorie()));
      c1.setBorder(0);
      c2.setBorder(0);
      table.addCell(c1);
@@ -213,9 +230,21 @@ public class PdfExportService {
          paragraph.add(new Paragraph(" "));
      }
      document.add(paragraph);
+     
+     
  }
 
- 
+ private String categorieToName(String categorie) {
+	 String t="(ة)";
+	 if(categorie.equals("w"))
+		 return  "الواعظ"+ t;
+		 else if (categorie.equals("t"))
+				 return  "ا لمتطوع "+ t  +" الواعظ" + t;
+		 else if (categorie.equals("o"))
+			 return "عضو المجلس";	
+		 else return
+				"المؤطر"+t;
+ }
 
      
 }

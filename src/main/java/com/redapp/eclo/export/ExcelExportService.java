@@ -52,9 +52,9 @@ public class ExcelExportService {
 	 String fileName="programme_"+month+"_"+year+"_"+usernameTitle+"_"+categorieTitle+".xls";
 	 
      try (OutputStream os = new FileOutputStream("target/"+fileName)) {
-	        List<String> headers = Arrays.asList("zone", "encadrant" ,"horaire","date"  ,"sujet","type");
+	        List<String> headers = Arrays.asList("sex","zone", "lieu","encadrant" ,"horaire","date"  ,"sujet","type");
 	        SimpleExporter exporter = new SimpleExporter();
-	        exporter.gridExport(headers, this.lessonsService.getLessons(month, year, username,categorie), "appUser.area,appUser.name,time,date,title,type", os);
+	        exporter.gridExport(headers, this.lessonsService.getLessons(month, year, username,categorie), "appUser.sex,appUser.area,area,appUser.name,time,date,title,type", os);
 	
 
     		 

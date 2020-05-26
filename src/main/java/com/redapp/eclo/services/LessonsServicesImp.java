@@ -48,13 +48,13 @@ ProgramRepository programRepository;
 	public Lesson addLesson(LessonRequest lessonRequest) {
 		Optional<AppUser> appUserOpt=this.appUserRepository.findById(lessonRequest.getUsername());
 		if(!appUserOpt.isPresent())
-			throw new RuntimeException("Utilisateur introuvable");
+			throw new RuntimeException("مستخدم غير موجود");
 		Optional<Program> programOpt=this.programRepository.findById(lessonRequest.getProgramId());
 		if(!programOpt.isPresent())
-			throw new RuntimeException("Program Introuvable");
+			throw new RuntimeException("برنامج غير موجود");
 		Date date=validateDate(lessonRequest.getDate());
 		Lesson lesson=new Lesson(lessonRequest.getType(),lessonRequest.getTitle(),date,
-				lessonRequest.getTime(),programOpt.get(),appUserOpt.get());
+				lessonRequest.getTime(),lessonRequest.getArea(),programOpt.get(),appUserOpt.get());
 		return this.lessonRepository.save(lesson);
 	}
 
@@ -62,7 +62,7 @@ ProgramRepository programRepository;
 	public void deleteLesson(Long id) {
 		Optional<Lesson> lessonOpt=this.lessonRepository.findById(id);
 		if(!lessonOpt.isPresent())
-			throw new RuntimeException("Lesson introuvable");
+			throw new RuntimeException("درس غير موجود");
 	this.lessonRepository.deleteById(id);
 
 	}
@@ -71,7 +71,7 @@ ProgramRepository programRepository;
 	public Lesson editLesson(Long id,LessonRequest lessonRequest) {
 	Optional<Lesson> oldLessonOpt=this.lessonRepository.findById(id);
 	if(!oldLessonOpt.isPresent())
-		throw new RuntimeException("Lesson Introuvable");
+		throw new RuntimeException("درس غير موجود");
 	
 	Date date=validateDate(lessonRequest.getDate());
 	Lesson oldLesson=oldLessonOpt.get();
@@ -79,6 +79,7 @@ ProgramRepository programRepository;
 	oldLesson.setTime(lessonRequest.getTime());
 	oldLesson.setTitle(lessonRequest.getTitle());
 	oldLesson.setType(lessonRequest.getType());
+	oldLesson.setArea(lessonRequest.getArea());
 	return oldLesson;
 	}
 	
@@ -91,16 +92,13 @@ ProgramRepository programRepository;
 			e.printStackTrace();
 		}
 		if(date==null)
-			throw new RuntimeException("Date invalide");
+			throw new RuntimeException("تاريخ غير دقيق");
 		return date;
 	}
 
 	@Override
 	public List<UserProgCount> usersCountLesson(String programId, String keyword,String categorie,String status) {
-		System.out.println(programId);
-		System.out.println(keyword);
-		System.out.println(categorie);
-		System.out.println(status);
+
 		List<AppUser> users=this.UsersService.getUsers(keyword,status,categorie);
 		
 		List<UserProgCount> usersWithLessCount=new ArrayList<UserProgCount>();

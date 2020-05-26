@@ -27,7 +27,7 @@ ProgramRepository programRepository;
 		String programId=programRequest.getMonth().toString()+programRequest.getYear().toString();
 		Optional<Program> programOption = this.programRepository.findById(programId);
 		if(programOption.isPresent())
-			throw new RuntimeException("Programe deja existant");
+			throw new RuntimeException("هذا البرنامج سبق اظافته");
 		
 		return this.programRepository.save(new Program(programRequest.getMonth(),programRequest.getYear(),programRequest.getHijri()));
 	}
@@ -36,7 +36,7 @@ ProgramRepository programRepository;
 		String programId=month.toString()+year.toString();
 		Optional<Program> programOption = this.programRepository.findById(programId);
 		if(!programOption.isPresent())
-			throw new RuntimeException("Programe Introuvable");
+			throw new RuntimeException("برنامج غيرموجود");
 		Program oldProgram = programOption.get();
 		oldProgram.setHijri(programRequest.getHijri());
 		oldProgram.setStatus(programRequest.getStatus());
@@ -52,7 +52,7 @@ ProgramRepository programRepository;
 	@Override
 	public void deleteProgram(String programId) {
 		if(!this.programRepository.findById(programId).isPresent())
-			throw new RuntimeException("programme introuvable");
+			throw new RuntimeException("برنامج غيرموجود");
 		
 		this.programRepository.deleteById(programId);
 		

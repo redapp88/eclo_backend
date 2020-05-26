@@ -29,19 +29,22 @@ private String title;
 private Date date;
 @NotNull
 private String time;
+@NotNull
+private String area;
 @ManyToOne
 @NotNull
 private Program program;
 @ManyToOne
 @NotNull
 private AppUser appUser;
-public Lesson(@NotNull String type, @NotNull String title, @NotNull Date date, @NotNull String time,
+public Lesson(@NotNull String type, @NotNull String title, @NotNull Date date, @NotNull String time,@NotNull String area,
 		@NotNull Program program, @NotNull AppUser appUser) {
 	super();
 	this.type = type;
 	this.title = title;
 	this.date = date;
 	this.time = time;
+	this.area=area;
 	this.program = program;
 	this.appUser = appUser;
 }
