@@ -26,6 +26,7 @@ import org.jxls.transform.Transformer;
 import org.jxls.util.JxlsHelper;
 import org.jxls.util.TransformerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -86,7 +87,7 @@ public class PdfExportService {
 		 throw new RuntimeException("Programme introuvable");
 	 
 	this.bf= BaseFont.createFont(
-			    "target/arialuni.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			 new ClassPathResource("fonts/arialuni.ttf").getPath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 	this.bigFont= new Font(bf, 18,
             Font.BOLDITALIC);
 	this.smallFont= new Font(bf, 12,
@@ -128,8 +129,8 @@ public class PdfExportService {
      Paragraph entete = new Paragraph();
      entete.setAlignment(Paragraph.ALIGN_CENTER);
      addEmptyLine(document, 2);
-     Image img = Image.getInstance("target/royaume.png");
-     Image img2 = Image.getInstance("target/logo.png");
+     Image img = Image.getInstance( new ClassPathResource("images/royaume.png").getPath());
+     Image img2 = Image.getInstance(new ClassPathResource("images/logo.png").getPath());
      img.scaleAbsolute(50, 50);
      img.setAbsolutePosition(270, 780);
      img2.scaleAbsolute(100, 80);
