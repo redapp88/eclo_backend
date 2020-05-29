@@ -87,7 +87,7 @@ public class PdfExportService {
 		 throw new RuntimeException("Programme introuvable");
 	 
 	this.bf= BaseFont.createFont(
-			 new ClassPathResource("fonts/arialuni.ttf").getURI().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			 new ClassPathResource("fonts/ARIALUNI.TTF").getURL().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 	this.bigFont= new Font(bf, 18,
             Font.BOLDITALIC);
 	this.smallFont= new Font(bf, 12,
@@ -129,8 +129,8 @@ public class PdfExportService {
      Paragraph entete = new Paragraph();
      entete.setAlignment(Paragraph.ALIGN_CENTER);
      addEmptyLine(document, 2);
-     Image img = Image.getInstance( new ClassPathResource("images/royaume.png").getURI().toString());
-     Image img2 = Image.getInstance(new ClassPathResource("images/logo.png").getURI().toString());
+     Image img = Image.getInstance( new ClassPathResource("images/royaume.png").getURL().toString());
+     Image img2 = Image.getInstance(new ClassPathResource("images/logo.png").getURL().toString());
      img.scaleAbsolute(50, 50);
      img.setAbsolutePosition(270, 780);
      img2.scaleAbsolute(100, 80);
