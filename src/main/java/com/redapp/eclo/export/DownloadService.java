@@ -48,7 +48,6 @@ public class DownloadService {
  		e.printStackTrace();
  	}
  	return ResponseEntity.ok()
- 			.contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
  			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
  			.body(resource);
  }

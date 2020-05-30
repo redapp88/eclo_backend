@@ -88,11 +88,11 @@ public class PdfExportService {
 	 
 	this.bf= BaseFont.createFont(
 			 new ClassPathResource("fonts/ARIALUNI.TTF").getURL().toString(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-	this.bigFont= new Font(bf, 18,
+	this.bigFont= new Font(bf, 16,
             Font.BOLDITALIC);
 	this.smallFont= new Font(bf, 12,
             Font.NORMAL);
-	this.xsmallFont= new Font(bf, 9,
+	this.xsmallFont= new Font(bf, 10,
             Font.NORMAL);
 	 String fileName="programme_"+month+"_"+year+"_"+username+".pdf";
      try {
@@ -148,7 +148,8 @@ public class PdfExportService {
      title+=" لشهر ";
      title+=" "+months[(int) (month-1)];
      title+=" "+year+"م";
-     title+=" موافق "+hijri+" هـ";
+     title+=System.getProperty("line.separator");
+     title+=" موافق "+hijri;
      phrase.add(new Chunk(title, bigFont));
      PdfPCell cell = new PdfPCell(phrase);
      cell.setUseDescender(true);
