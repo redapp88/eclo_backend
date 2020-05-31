@@ -69,7 +69,7 @@ public AppUser addManager(
 return this.usersService.addManager(userRequest);
 }
 
-@PutMapping("admin/editUser")
+@PutMapping("user/editUser")
 public AppUser editUser(
 		@RequestParam String username,
 		@RequestBody UserRequest userRequest)
