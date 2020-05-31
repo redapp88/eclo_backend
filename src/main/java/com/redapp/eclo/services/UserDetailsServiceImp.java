@@ -33,7 +33,15 @@ private UsersService usersService;
 		if(appUser.getStatus().equals("disabled")) throw new RuntimeException("compte desactivé");
 		Collection<GrantedAuthority> authorities=new ArrayList<>();
 	    authorities.add(new SimpleGrantedAuthority(appUser.getAppRole().getRoleName()));
-	    ExtendedUser user=new ExtendedUser(appUser.getUsername(), appUser.getPassword(),appUser.getName(), authorities);
+	    ExtendedUser user=new ExtendedUser(appUser.getUsername(),
+	    		appUser.getPassword(),
+	    		appUser.getName(),
+	    		appUser.getCategorie(),
+	    		appUser.getArea(),
+	    		appUser.getSex(),
+	    		appUser.getPhone(),
+	    		appUser.getStatus(),
+	    		authorities);
 		return user;
 	}
 

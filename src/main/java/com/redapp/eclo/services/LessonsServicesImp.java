@@ -53,6 +53,9 @@ ProgramRepository programRepository;
 		if(!programOpt.isPresent())
 			throw new RuntimeException("برنامج غير موجود");
 		Date date=validateDate(lessonRequest.getDate());
+		Program p=programOpt.get();
+		if(!p.getStatus().equals("enabled"))
+			throw new RuntimeException("برنامج مقفل");
 		Lesson lesson=new Lesson(lessonRequest.getType(),lessonRequest.getTitle(),date,
 				lessonRequest.getTime(),lessonRequest.getArea(),programOpt.get(),appUserOpt.get());
 		return this.lessonRepository.save(lesson);
@@ -63,6 +66,8 @@ ProgramRepository programRepository;
 		Optional<Lesson> lessonOpt=this.lessonRepository.findById(id);
 		if(!lessonOpt.isPresent())
 			throw new RuntimeException("درس غير موجود");
+		if(!lessonOpt.get().getProgram().getStatus().equals("enabled"))
+			throw new RuntimeException("برنامج مقفل");
 	this.lessonRepository.deleteById(id);
 
 	}
@@ -75,6 +80,9 @@ ProgramRepository programRepository;
 	
 	Date date=validateDate(lessonRequest.getDate());
 	Lesson oldLesson=oldLessonOpt.get();
+	if(!oldLesson.getProgram().getStatus().equals("enabled"))
+		throw new RuntimeException("برنامج مقفل");
+	
 	oldLesson.setDate(date);
 	oldLesson.setTime(lessonRequest.getTime());
 	oldLesson.setTitle(lessonRequest.getTitle());
