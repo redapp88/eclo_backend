@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jxls.area.Area;
 import org.jxls.builder.AreaBuilder;
 import org.jxls.builder.xls.XlsCommentAreaBuilder;
@@ -49,6 +50,7 @@ public class DownloadService {
  	}
  	return ResponseEntity.ok()
  			.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+ 			 .contentType(MediaType.valueOf(ExtensionToMediaType(FilenameUtils.getExtension(fileName))))
  			.body(resource);
  }
  public void deleteFile(String fileName) throws IOException {
@@ -57,5 +59,15 @@ public class DownloadService {
 	 
  }
 	 
+ private String ExtensionToMediaType(String ext) {
+	 if(ext.equals("pdf"))
+		 return  "application/pdf";
+	 else if(ext.equals("xls")) 
+		 return  "application/vnd.ms-excel";
+		 
+		 else 
+			 return "application/octet-stream";
+	 
+ }
      
 }
