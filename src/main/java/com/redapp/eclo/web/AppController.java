@@ -11,6 +11,8 @@ import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,7 @@ import com.redapp.eclo.entities.UserRequest;
 import com.redapp.eclo.export.DownloadService;
 import com.redapp.eclo.export.ExcelExportService;
 import com.redapp.eclo.export.PdfExportService;
+import com.redapp.eclo.security.ExtendedUser;
 import com.redapp.eclo.services.LessonsService;
 import com.redapp.eclo.services.ProgramsService;
 import com.redapp.eclo.services.UsersService;
@@ -59,6 +62,8 @@ DownloadService downloadService;
 public AppUser addUser(
 		@RequestBody UserRequest userRequest)
 {
+	this.testBlocked();
+	
 return this.usersService.addUser(userRequest);
 }
 
@@ -66,6 +71,7 @@ return this.usersService.addUser(userRequest);
 public AppUser addManager(
 		@RequestBody UserRequest userRequest)
 {
+	this.testBlocked();
 return this.usersService.addManager(userRequest);
 }
 
@@ -74,6 +80,7 @@ public AppUser editUser(
 		@RequestParam String username,
 		@RequestBody UserRequest userRequest)
 {
+	this.testBlocked();
 return this.usersService.editUser(username,userRequest);
 }
 
@@ -82,6 +89,7 @@ public AppUser editPassword(
 		@RequestParam String username,
 		@RequestBody UserRequest userRequest)
 {
+	this.testBlocked();
 return this.usersService.editPassword(username,userRequest);
 }
 
@@ -91,7 +99,7 @@ public List<AppUser> usersList(
 		@RequestParam String keyword,
 		@RequestParam String status)
 {
-
+	this.testBlocked();
 return this.usersService.getUsers(keyword, status,categorie);
 }
 
@@ -99,6 +107,7 @@ return this.usersService.getUsers(keyword, status,categorie);
 public List<AppUser> managersList(
 )
 {
+	this.testBlocked();
 return this.usersService.getManagers();
 }
 
@@ -107,6 +116,7 @@ public void deleteManager(
 		@RequestParam String username
 )
 {
+	this.testBlocked();
 this.usersService.deleteManager(username);;
 }
 
@@ -115,6 +125,7 @@ public void deleteUser(
 		@RequestParam String username
 )
 {
+	this.testBlocked();
 this.usersService.deleteUser(username);;
 }
 
@@ -123,6 +134,7 @@ this.usersService.deleteUser(username);;
 public Program addProgram(
 		@RequestBody ProgramRequest programRequest)
 {
+	this.testBlocked();
 return this.programsService.addPrgram(programRequest);
 }
 
@@ -133,7 +145,7 @@ return this.programsService.addPrgram(programRequest);
 			@RequestParam Long year,
 			@RequestBody ProgramRequest programRequest)
 	{
-		
+	this.testBlocked();
 	return this.programsService.editProgram(month,year,programRequest);
 	}
 
@@ -141,6 +153,7 @@ return this.programsService.addPrgram(programRequest);
 public void deleteProgram(
 		@RequestParam String id)
 {
+	this.testBlocked();
 	
  this.programsService.deleteProgram(id);
 }
@@ -148,6 +161,7 @@ public void deleteProgram(
 @GetMapping("users/programs/list")
 public List<Program> programsPage()
 {
+	this.testBlocked();
 return this.programsService.getPrograms();
 }
 
@@ -158,6 +172,7 @@ public List<UserProgCount> usersCountLesson(
 		@RequestParam String categorie,
 		@RequestParam String status)
 {
+	this.testBlocked();
 return this.lessonsService.usersCountLesson(programId, keyword, categorie,status);
 }
 	
@@ -166,6 +181,7 @@ return this.lessonsService.usersCountLesson(programId, keyword, categorie,status
 public Lesson addLesson(
 		@RequestBody LessonRequest lessonRequest)
 {
+	this.testBlocked();
 return this.lessonsService.addLesson(lessonRequest);
 }
 
@@ -174,7 +190,7 @@ return this.lessonsService.addLesson(lessonRequest);
 			@RequestParam Long id,
 			@RequestBody LessonRequest lessonRequest)
 	{
-		
+	this.testBlocked();
 	return this.lessonsService.editLesson(id, lessonRequest);
 	}
 
@@ -182,7 +198,7 @@ return this.lessonsService.addLesson(lessonRequest);
 public void deleteLesson(
 		@RequestParam Long id)
 {
-	
+	this.testBlocked();
  this.lessonsService.deleteLesson(id);;
 }
 
@@ -193,6 +209,7 @@ public List<Lesson> lessonsPage(
 		@RequestParam String username,
 		@RequestParam String categorie)
 {
+	this.testBlocked();
 return this.lessonsService.getLessons(month, year, username,categorie);
 }
 // teste//
@@ -202,6 +219,7 @@ return this.lessonsService.getLessons(month, year, username,categorie);
 			@RequestParam Long year,
 			@RequestParam String username,
 			@RequestParam String categorie) throws FileNotFoundException, IOException {
+		this.testBlocked();
 return this.excelExportService.programExcelExport(month, year, username,categorie);
 	}
 	
@@ -211,19 +229,26 @@ return this.excelExportService.programExcelExport(month, year, username,categori
 	(@RequestParam Long month,
 			@RequestParam Long year,
 			@RequestParam String username) throws FileNotFoundException, IOException, DocumentException {
+		this.testBlocked();
 return this.pdfExportService.programPdfExport(month,year,username);
 	}
 	
 	@GetMapping(value = "/downloadFile")
 	public ResponseEntity downloadFile (@RequestParam String fileName) throws FileNotFoundException, IOException {
-return this.downloadService.downloadFile(fileName);
+		this.testBlocked();
+		return this.downloadService.downloadFile(fileName);
 	}
 	@DeleteMapping(value = "/deleteFile")
 	public void deleteFile (@RequestParam String fileName) throws FileNotFoundException, IOException {
- this.downloadService.deleteFile(fileName);
+		this.testBlocked();
+		this.downloadService.deleteFile(fileName);
 	}
 	
 	
 	
-	
+private void testBlocked() {
+	 ExtendedUser user = (ExtendedUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	 if(user.getStatus()!="active")
+		 throw new RuntimeException("403");
+}	
 	}
