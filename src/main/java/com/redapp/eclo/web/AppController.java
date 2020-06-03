@@ -247,8 +247,8 @@ return this.pdfExportService.programPdfExport(month,year,username);
 	
 	
 private void testBlocked() {
-	 ExtendedUser user = (ExtendedUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	 if(user.getStatus()!="active")
-		 throw new RuntimeException("403");
+	/*UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	AppUser user= this.usersService.get userDetails.ge
+		 throw new RuntimeException("403");*/
 }	
 	}
