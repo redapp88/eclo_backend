@@ -46,12 +46,13 @@ public class ECloApplication implements CommandLineRunner {
 AppRole role1=new AppRole("USER");
 		AppRole role2=new AppRole("MANAGER");
 	    
+		
 	    Program program=new Program(12L,2019L,"moharam");
 	    this.AppRoleRepository.save(role1);
 	    this.AppRoleRepository.save(role2);
 	    this.programRepository.save(program);
 	    this.usersService.addManager(new UserRequest("admin","1234","","m","","","taounate","active"));
-	    AppUser u=this.usersService.addUser(new UserRequest("red5","1234","reda EL IDRISSI","mal","0909000","w","taounate","active"));
+	    //AppUser u=this.usersService.addUser(new UserRequest("red5","1234","reda EL IDRISSI","mal","0909000","w","taounate","active"));
 	 /* this.lessonRepository.save(new Lesson("سيبيسبيشسب","ثبثصب",new Date(),"صثقبثصقثصق","ss",program,u));
 	 u.getLessons().add(new Lesson("سيبيسبيشسب","ثبثصب",new Date(),"صثقبثصقثصق",program,u));
 	    program.getLessons().add(e)*/
