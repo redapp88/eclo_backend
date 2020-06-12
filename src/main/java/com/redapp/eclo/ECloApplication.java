@@ -48,7 +48,7 @@ AppRole role1=new AppRole("USER");
 	    
 		
 	    Program program=new Program(12L,2019L,"moharam");
-	   /* this.AppRoleRepository.save(role1);
+	    this.AppRoleRepository.save(role1);
 	    this.AppRoleRepository.save(role2);
 	    this.programRepository.save(program);
 	    this.usersService.addManager(new UserRequest("admin","1234","","m","","","taounate","active"));
