@@ -15,5 +15,4 @@ public interface AppUserRepository extends JpaRepository<AppUser, String> {
 			@Param(value = "status") String status,
 			@Param(value = "role") String role,
 			@Param(value = "categorie") String categorie);
-
 }
